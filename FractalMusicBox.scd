@@ -33,7 +33,7 @@ SynthDef(\ping, {arg freq=440, sustain = 0.3, amp=0.1, pan=0;
 			var newDurations;
 			newDurations = time*timeProportions;
 			newDurations.do {|x, i|
-				~fractalize.value(~freqArray.wrapAt(i) + freq, x, timeProportions, depth-1);
+				~fractalize.value(~freqArray.wrapAt(i) * freq + ~freqArray.wrapAt(i), x, timeProportions, depth-1);
 			}
 		}
 	);
@@ -75,12 +75,12 @@ r.next //input rhythm (2) : press ctrl-enter on this line repeatedly to create a
 
 (
 ~timesToPlay = List.new; ~notesToPlay = List.new;
-~freqArray = [1, 2, 3, 4, 5, 6, 7, 8];
-//~freqArray = {rrand(-5,14)}!10; // uncomment to randomize frequencies
+//~freqArray = [1, 2, 3, 4, 5, 6, 7, 8];
+~freqArray = {rrand(-5,14)}!10; // uncomment to randomize frequencies
 
 )// reset notes and times (3)
 
-~fractalize.value(1, ~durs.sum*~timeFactor, ~normalized, 3); // fractalize (4)
+~fractalize.value(1, ~durs.sum*~timeFactor, ~normalized, 2); // fractalize (4)
 
 
 ~timesToPlay
@@ -119,6 +119,7 @@ d = Synth.tail(nil, "help-Diskout", ["bufnum", b]);
 d.free;
 // close the buffer and the soundfile
 b.close;
+
 // free the buffer
 b.free;
 
